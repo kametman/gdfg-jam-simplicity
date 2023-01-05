@@ -1,0 +1,31 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://components/PlayerEntity.tscn" type="PackedScene" id=2]
+
+[node name="MainGame" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 600.0
+margin_bottom = 480.0
+
+[node name="UI" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 600.0
+margin_bottom = 480.0
+
+[node name="ScoreLabel" type="Label" parent="UI"]
+modulate = Color( 0, 0, 0, 1 )
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -157.0
+margin_top = 18.0
+margin_right = -88.0
+margin_bottom = 33.0
+rect_scale = Vector2( 2, 2 )
+text = "00000"
+align = 2
+
+[node name="PlayerEntity" parent="." instance=ExtResource( 2 )]
+position = Vector2( 298, 220 )
+_speed = 200.0
