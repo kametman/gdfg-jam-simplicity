@@ -11,7 +11,12 @@ config_version=4
 [application]
 
 config/name="Shape 'n' Color"
+run/main_scene="res://scenes/TitleScreen.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+GameData="*res://components/GameData.tscn"
 
 [display]
 

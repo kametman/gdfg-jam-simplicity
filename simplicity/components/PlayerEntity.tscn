@@ -4,16 +4,16 @@
 [ext_resource path="res://components/PlayerEntity.cs" type="Script" id=2]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 16.0
+radius = 14.0
 
 [node name="PlayerEntity" type="KinematicBody2D"]
-collision_mask = 0
+collision_mask = 2
 script = ExtResource( 2 )
 _speed = 5.0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 1 )
 
 [node name="GameEntity" parent="." instance=ExtResource( 1 )]
 ShapeIndex = 0
 ColorIndex = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )

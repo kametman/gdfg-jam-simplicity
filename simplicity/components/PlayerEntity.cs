@@ -4,11 +4,20 @@ using System;
 public class PlayerEntity : KinematicBody2D
 {
     [Export] private float _speed;
+    [Export] private uint _screenMargin = 16;
+    private Vector2 _screenSize;
+    private GameEntity _gameEntity;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        
+        _screenSize = GetViewportRect().Size;
+        _gameEntity = GetNode<GameEntity>("GameEntity");
+    }
+
+    public (int, int) GetEntityType()
+    {
+        return (_gameEntity.ShapeIndex, _gameEntity.ColorIndex);
     }
     
     public override void _PhysicsProcess(float delta)
@@ -23,13 +32,13 @@ public class PlayerEntity : KinematicBody2D
         {
             direction = direction.Normalized();
             MoveAndSlide(direction * _speed);
+
+            var postionX = Mathf.Clamp(Position.x, _screenMargin, _screenSize.x - _screenMargin);
+            var postionY = Mathf.Clamp(Position.y, _screenMargin, _screenSize.y - _screenMargin);
+            Position = new Vector2(postionX, postionY);
         }
     }
     
 
-//  // Called every frame. 'delta' is the elapsed time since the previous frame.
-//  public override void _Process(float delta)
-//  {
-//      
-//  }
+
 }
