@@ -25,8 +25,6 @@ _screenMargin = 32
 curve = SubResource( 1 )
 
 [node name="SpawnLocation" type="PathFollow2D" parent="SpawnPath"]
-position = Vector2( 80, 64 )
-rotation = -0.019228
 
 [node name="SpawnTimer" type="Timer" parent="."]
 autostart = true
@@ -50,5 +48,16 @@ custom_colors/font_color_shadow = Color( 1, 1, 1, 1 )
 custom_constants/shadow_offset_x = 0
 text = "9999"
 align = 2
+
+[node name="LivesLabel" type="Label" parent="UI"]
+margin_left = 8.0
+margin_top = 16.0
+margin_right = 67.0
+margin_bottom = 31.0
+rect_scale = Vector2( 3, 3 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 1, 1, 1, 1 )
+custom_constants/shadow_offset_x = 0
+text = "[][][]"
 
 [connection signal="timeout" from="SpawnTimer" to="." method="OnSpawnTimerTimeout"]

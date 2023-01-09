@@ -38,7 +38,52 @@ public class PlayerEntity : KinematicBody2D
             Position = new Vector2(postionX, postionY);
         }
     }
-    
 
+    // public override void _Input(InputEvent @event)
+    // {
+    //     if (@event is InputEventMouseButton)
+    //     {
+    //         var mouseEvent = @event as InputEventMouseButton;
+    //         if (mouseEvent.ButtonIndex == (int)ButtonList.Left) 
+    //         {
+    //             if (mouseEvent.Pressed)
+    //             {
+    //                 var mousePosition = mouseEvent.Position;
+    //                 var positionDiff = mousePosition - Position;
+    //                 if (Math.Abs(positionDiff.x) > Math.Abs(positionDiff.y))
+    //                 {
+    //                     if (positionDiff.x < 0) { Input.ActionPress("move_left"); }
+    //                     if (positionDiff.x > 0) { Input.ActionPress("move_right"); }
+    //                 }
+    //                 if (Math.Abs(positionDiff.y) < Math.Abs(positionDiff.x))
+    //                 {
+    //                     if (positionDiff.y < 0) { Input.ActionPress("move_up"); }
+    //                     if (positionDiff.y > 0) { Input.ActionPress("move_down"); }
+    //                 }
 
+    //                 // if (mousePosition.y < Position.y) { Input.ActionPress("move_up"); }
+    //                 // if (mousePosition.y > Position.y) { Input.ActionPress("move_down"); }
+    //                 // if (mousePosition.x < Position.x) { Input.ActionPress("move_left"); }
+    //                 // if (mousePosition.x > Position.x) { Input.ActionPress("move_right"); }
+    //             }
+    //             else
+    //             {
+    //                 Input.ActionRelease("move_up");
+    //                 Input.ActionRelease("move_down");
+    //                 Input.ActionRelease("move_left");
+    //                 Input.ActionRelease("move_right");
+    //             }
+    //         }
+    //     }
+
+    //     base._Input(@event);
+    // }
+
+    public void OnPlayerChanged(int shapeIndex, int colorIndex)
+    {
+        _gameEntity.ShapeIndex = shapeIndex;
+        _gameEntity.ColorIndex = colorIndex;
+        // matchEntity.Disconnect("PlayerChanged", this, "OnPlayerChanged");
+
+    }
 }

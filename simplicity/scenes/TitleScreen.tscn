@@ -14,7 +14,7 @@ margin_bottom = 480.0
 [node name="ColorRect" type="ColorRect" parent="UI"]
 margin_right = 600.0
 margin_bottom = 480.0
-color = Color( 0.52549, 0.505882, 0.505882, 1 )
+color = Color( 0.0627451, 0.0627451, 0.0627451, 1 )
 
 [node name="TitleLabel" type="Label" parent="UI"]
 anchor_left = 0.5

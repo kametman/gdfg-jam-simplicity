@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class TitleScreen : Node2D
+public class HintScreen : Node2D
 {
     private GameData _gameData;
 
@@ -10,8 +10,9 @@ public class TitleScreen : Node2D
         _gameData = GetNode<GameData>("/root/GameData");
     }
 
-    public void OnPlayButtonPressed()
+    public void OnStartButtonPressed()
     {
-        GetTree().ChangeScene("res://scenes/HintScreen.tscn");
+        _gameData.ResetScore();
+        GetTree().ChangeScene("res://scenes/MainGame.tscn");
     }
 }

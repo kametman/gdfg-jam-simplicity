@@ -3,13 +3,20 @@ using System;
 
 public class MatchEntity : RigidBody2D
 {
-    [Signal] public delegate void MatchCollision(MatchEntity matchEntity, int points);
+    [Signal] public delegate void MatchCollided(int points);
+    [Signal] public delegate void PlayerChanged(int shapeIndex, int colorIndex);
 
     private GameEntity _gameEntity;
 
     public override void _Ready()
     {
         _gameEntity = GetNode<GameEntity>("GameEntity");
+    }
+
+    public void Init(int shapeIndex, int colorIndex)
+    {
+        _gameEntity.ShapeIndex = shapeIndex;
+        _gameEntity.ColorIndex = colorIndex;
     }
 
     public void OnMatchEntityBodyEntered(Node body)
@@ -23,15 +30,25 @@ public class MatchEntity : RigidBody2D
 
             if (playerShape == thisShape && playerColor == thisColor)
             {
-                EmitSignal(nameof(MatchCollision),this, 3);
+                EmitSignal(nameof(MatchCollided), 3);
             }
-            else if (playerShape == thisShape || playerColor == thisColor)
+            else 
             {
-                EmitSignal(nameof(MatchCollision), this, 1);
+                if (playerShape == thisShape || playerColor == thisColor)
+                {
+                    EmitSignal(nameof(MatchCollided), 1);
+                }
+                else { EmitSignal(nameof(MatchCollided), 0); }
+
+                EmitSignal(nameof(PlayerChanged), thisShape, thisColor);
             }
         }
-        else { EmitSignal(nameof(MatchCollision), this, 0); }
 
+        QueueFree();
+    }
+
+    public void OnVisibilityNotifier2dScreenExited()
+    {
         QueueFree();
     }
 }

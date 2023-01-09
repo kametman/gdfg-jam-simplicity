@@ -21,4 +21,7 @@ shape = SubResource( 1 )
 ShapeIndex = 0
 ColorIndex = 1
 
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+
 [connection signal="body_entered" from="." to="." method="OnMatchEntityBodyEntered"]
+[connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="OnVisibilityNotifier2dScreenExited"]
