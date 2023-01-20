@@ -4,8 +4,13 @@
 
 [node name="GameEntity" type="Node2D"]
 script = ExtResource( 1 )
-ShapeIndex = 1
+ShapeIndex = 2
 _imagesList = PoolStringArray( "res://assets/sprites/circle.png", "res://assets/sprites/square.png", "res://assets/sprites/triangle.png", "res://assets/sprites/cross.png" )
 _colorsList = PoolColorArray( 1, 0, 0, 1, 0.12549, 0.12549, 1, 1, 0.12549, 1, 0.12549, 1, 1, 0.501961, 0, 1 )
 
 [node name="EntitySprite" type="Sprite" parent="."]
+
+[node name="GlowSprite" type="Sprite" parent="EntitySprite"]
+self_modulate = Color( 1.5, 1.5, 1.5, 1 )
+show_behind_parent = true
+scale = Vector2( 1.1, 1.1 )

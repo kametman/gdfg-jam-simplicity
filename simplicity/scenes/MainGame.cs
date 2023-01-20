@@ -18,7 +18,7 @@ public class MainGame : Node2D
     private int _spawnMargin = 16;
     private PlayerEntity _playerEntity;
     private float _scaleFactor = 0.02f;
-    private string _livesText = "[][][]";
+    private string _livesText = "[X][X][X]";
     private Camera2D _mainCamera;
     private Control _gameOverUI;
     private Timer _spawnTimer;
@@ -47,7 +47,7 @@ public class MainGame : Node2D
     public override void _Process(float delta)
     {
         _scoreLabel.Text = _gameData.Score.ToString();
-        _livesLabel.Text = _livesText.Substring(0, _gameData.Lives * 2);
+        _livesLabel.Text = _livesText.Substring(0, _gameData.Lives * 3);
     }
 
     public void OnSpawnTimerTimeout()
@@ -66,11 +66,13 @@ public class MainGame : Node2D
             _gameOverUI.Show();
             _gameOverTimer.Start();
         }
+
+        _playerEntity.IncreaseSpeed();
     }
 
     public void OnGameOverTimerTimeout()
     {
-            GetTree().ChangeScene("res://scenes/TitleScreen.tscn"); 
+        GetTree().ChangeScene("res://scenes/TitleScreen.tscn"); 
     }
 
     private MatchEntity GetNewMatchEntity()

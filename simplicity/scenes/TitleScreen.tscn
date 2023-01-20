@@ -19,10 +19,10 @@ color = Color( 0.0627451, 0.0627451, 0.0627451, 1 )
 [node name="TitleLabel" type="Label" parent="UI"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -88.0
-margin_top = 69.0
-margin_right = -50.0
-margin_bottom = 103.0
+margin_left = -300.0
+margin_top = 8.0
+margin_right = -180.0
+margin_bottom = 48.0
 grow_horizontal = 2
 grow_vertical = 2
 rect_scale = Vector2( 5, 5 )
@@ -45,5 +45,21 @@ margin_bottom = 405.0
 rect_scale = Vector2( 2.5, 2.5 )
 custom_constants/hseparation = 0
 text = "PLAY"
+
+[node name="HighScoreTitleLabel" type="Label" parent="UI"]
+margin_top = 208.0
+margin_right = 300.0
+margin_bottom = 224.0
+rect_scale = Vector2( 2, 2 )
+text = "HIGH SCORE"
+align = 1
+
+[node name="HighScoresLabel" type="Label" parent="UI"]
+margin_top = 240.0
+margin_right = 200.0
+margin_bottom = 285.0
+rect_scale = Vector2( 3, 3 )
+custom_constants/line_spacing = 0
+align = 1
 
 [connection signal="pressed" from="UI/PlayButton" to="." method="OnPlayButtonPressed"]

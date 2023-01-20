@@ -39,6 +39,11 @@ public class PlayerEntity : KinematicBody2D
         }
     }
 
+    public void IncreaseSpeed()
+    {
+        _speed += 1.25f;
+    }
+
     // public override void _Input(InputEvent @event)
     // {
     //     if (@event is InputEventMouseButton)

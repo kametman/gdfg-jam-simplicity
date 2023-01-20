@@ -12,6 +12,7 @@ public class GameEntity : Node2D
 
     private List<Texture> _texturesList;
     private Sprite _entitySprite;
+    private Sprite _glowSprite;
 
     public override void _Ready()
     {
@@ -22,11 +23,17 @@ public class GameEntity : Node2D
         }
 
         _entitySprite = GetNode<Sprite>("EntitySprite");
+        _glowSprite = GetNode<Sprite>("EntitySprite/GlowSprite");
     }
 
     public override void _Process(float delta)
     {
+        var color = _colorsList[ColorIndex % _colorsList.Length];
         _entitySprite.Texture = _texturesList[ShapeIndex % _imagesList.Length];
-        _entitySprite.Modulate = _colorsList[ColorIndex % _colorsList.Length];
+        _entitySprite.Modulate = color;
+        _glowSprite.Texture = _texturesList[ShapeIndex % _imagesList.Length];
+        
+        color = (new Color(color.r, color.g, color.b, 0.5f) + 2 * Colors.White) / 3;
+        _glowSprite.Modulate = color;
     }
 }

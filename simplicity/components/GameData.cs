@@ -6,7 +6,8 @@ public class GameData : Node2D
 {
     public int Score { get { return _score; } }
     public int MatchLevel { get { return _matchLevel; } }
-    public int Lives {get { return _lives; } }
+    public int Lives { get { return _lives; } }
+    public int[] HighScores { get { return _highScores.ToArray(); } }
 
     [Export] private int _score;
     [Export] private List<int> _highScores;
@@ -14,9 +15,12 @@ public class GameData : Node2D
     private int[] _levelThresholds = new int[] { 10, 25, 50, 100, };
     [Export] private int _lives;
 
+    private AudioManager _audioManager;
+
     public override void _Ready()
     {
         _highScores = new List<int>();
+        _audioManager = GetNode<AudioManager>("AudioManager");
     }
 
     public void ResetScore()
@@ -30,6 +34,7 @@ public class GameData : Node2D
     {
         if (points == 0)
         {
+            _audioManager.PlayNoMatchSfx();
             _lives--;
 
             if (_lives == 0)
@@ -40,6 +45,9 @@ public class GameData : Node2D
         }
         else
         {
+            if (points == 1) { _audioManager.PlayGoodMatchSfx(); }
+            else { _audioManager.PlayPerfectMatchSfx(); }
+            
             _score += points;
             CalculateMatchLevel();
         }
