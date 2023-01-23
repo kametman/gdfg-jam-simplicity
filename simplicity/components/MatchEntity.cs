@@ -3,30 +3,83 @@ using System;
 
 public class MatchEntity : KinematicBody2D
 {
+    private enum PathShapes
+    {
+        Straight, ZigZag, Square,
+    }
+
     [Signal] public delegate void MatchCollided(int points);
     [Signal] public delegate void PlayerChanged(int shapeIndex, int colorIndex);
     [Signal] public delegate void ScreenShake(float shakeAmount, float duration);
 
     private GameEntity _gameEntity;
+    private Timer _pathTimer;
     private float _speed;
-    private float _direction;
+    private float _baseDirection;
+    private float _intervalHalf = Mathf.Pi / 4f;
+
+    private PathShapes _pathShape = PathShapes.Straight;
+    private int _pathCounter = 0;
+    private PathShapes[] _pathsList = new PathShapes[]
+    {
+        PathShapes.Straight, PathShapes.Straight, PathShapes.Straight, PathShapes.ZigZag,
+        PathShapes.Straight, PathShapes.Straight, PathShapes.Straight, PathShapes.Square,
+    };
+    private float _zigZagVeeringAngle = Mathf.Pi / 4;
+    private float[] _squareAngles = new float[]
+    {
+        0f, Mathf.Pi / 4f, 0f, -Mathf.Pi / 4f,
+    };
 
     public override void _Ready()
     {
         _gameEntity = GetNode<GameEntity>("GameEntity");
+        _pathTimer = GetNode<Timer>("PathTimer");
     }
 
-    public void Init(int shapeIndex, int colorIndex, float speed, float direction)
+    public void Init(int shapeIndex, int colorIndex, float speed, float direction, bool newPath = false)
     {
         _gameEntity.ShapeIndex = shapeIndex;
         _gameEntity.ColorIndex = colorIndex;
+
         _speed = speed;
-        _direction = direction;
+
+        var entityDirection = (float)GD.RandRange(direction - _intervalHalf, direction + _intervalHalf);
+
+        _baseDirection = entityDirection;
+
+        if (newPath)
+        {
+            var pathIndex = (int)GD.RandRange(0, _pathsList.Length);
+            _pathShape = _pathsList[pathIndex];
+            if (_pathShape == PathShapes.ZigZag || _pathShape == PathShapes.Square)
+            {
+                _pathTimer.Start();
+            }
+        }
     }
     public override void _PhysicsProcess(float delta)
     {
-        var velocity = new Vector2(_speed, 0);
-        var collision = MoveAndCollide(velocity.Rotated(_direction) * delta);
+        var baseVelocity = new Vector2(_speed, 0);
+        var entityVelocity = baseVelocity;
+
+        if (_pathShape == PathShapes.Straight)
+        {
+            entityVelocity = baseVelocity.Rotated(_baseDirection);
+        }
+        else if (_pathShape == PathShapes.ZigZag)
+        {
+            _pathCounter = _pathCounter % 2;
+            var veerDirection = _pathCounter == 0 ? 1 : -1;
+            entityVelocity = baseVelocity.Rotated(_baseDirection + (_zigZagVeeringAngle * veerDirection));
+        }
+        else if (_pathShape == PathShapes.Square)
+        {
+            _pathCounter = _pathCounter % _squareAngles.Length;
+            entityVelocity = baseVelocity.Rotated(_baseDirection + _squareAngles[_pathCounter]);
+        }
+
+        var collision = MoveAndCollide(entityVelocity * delta);
         if (collision != null)
         {
             HandleCollision((Node)collision.Collider);
@@ -73,5 +126,10 @@ public class MatchEntity : KinematicBody2D
     public void OnGameOver()
     {
         QueueFree();
+    }
+
+    public void OnPathTimerTimeout()
+    {
+        _pathCounter++;
     }
 }

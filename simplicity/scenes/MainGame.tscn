@@ -59,16 +59,34 @@ text = "9999"
 align = 2
 
 [node name="LivesLabel" type="Label" parent="UI"]
-margin_left = 8.0
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -300.0
 margin_top = 16.0
-margin_right = 67.0
-margin_bottom = 31.0
+margin_bottom = 32.0
 rect_scale = Vector2( 2, 2 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_shadow = Color( 0.501961, 0.501961, 0.501961, 1 )
 custom_constants/shadow_offset_x = 1
 custom_constants/shadow_offset_y = 1
 text = "[X][X][X]"
+align = 1
+
+[node name="CurrentChainLabel" type="Label" parent="UI"]
+margin_left = 16.0
+margin_top = 8.0
+margin_right = 88.0
+margin_bottom = 24.0
+rect_scale = Vector2( 1.5, 1.5 )
+text = "Current: "
+
+[node name="HighestChainLabel" type="Label" parent="UI"]
+margin_left = 16.0
+margin_top = 32.0
+margin_right = 85.0
+margin_bottom = 48.0
+rect_scale = Vector2( 1.5, 1.5 )
+text = "Highest: "
 
 [node name="MainCamera" type="Camera2D" parent="."]
 anchor_mode = 0
@@ -118,6 +136,15 @@ margin_right = -180.0
 margin_bottom = 38.0
 rect_scale = Vector2( 5, 5 )
 text = "999"
+align = 1
+
+[node name="FinalChainLabel" type="Label" parent="GameOverUI"]
+margin_top = 352.0
+margin_right = 300.0
+margin_bottom = 387.0
+rect_scale = Vector2( 2, 2 )
+text = "HIGEST CHAIN
+45"
 align = 1
 
 [connection signal="timeout" from="SpawnTimer" to="." method="OnSpawnTimerTimeout"]

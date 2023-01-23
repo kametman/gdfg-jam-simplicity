@@ -24,6 +24,9 @@ public class MainGame : Node2D
     private Timer _spawnTimer;
     private Timer _gameOverTimer;
     private Label _finalScoreLabel;
+    private Label _currentChainLabel;
+    private Label _highestChainLabel;
+    private Label _finalChainLabel;
 
     public override void _Ready()
     {
@@ -41,13 +44,17 @@ public class MainGame : Node2D
         _spawnTimer = GetNode<Timer>("SpawnTimer");
         _gameOverTimer = GetNode<Timer>("GameOverUI/GameOverTimer");
         _finalScoreLabel = GetNode<Label>("GameOverUI/FinalScoreLabel");
-        
+        _currentChainLabel = GetNode<Label>("UI/CurrentChainLabel");
+        _highestChainLabel = GetNode<Label>("UI/HighestChainLabel");
+        _finalChainLabel = GetNode<Label>("GameOverUI/FinalChainLabel");
     }
 
     public override void _Process(float delta)
     {
         _scoreLabel.Text = _gameData.Score.ToString();
         _livesLabel.Text = _livesText.Substring(0, _gameData.Lives * 3);
+        _currentChainLabel.Text = $"CURRENT: {_gameData.CurrentChain}";
+        _highestChainLabel.Text = $"HIGHEST: {_gameData.HighestChain}";
     }
 
     public void OnSpawnTimerTimeout()
@@ -62,6 +69,7 @@ public class MainGame : Node2D
         { 
             EmitSignal(nameof(GameOver));
             _finalScoreLabel.Text = _scoreLabel.Text;
+            _finalChainLabel.Text = $"HIGHEST CHAIN{System.Environment.NewLine}{_gameData.HighestChain}";
             _spawnTimer.Stop();
             _gameOverUI.Show();
             _gameOverTimer.Start();
@@ -80,7 +88,6 @@ public class MainGame : Node2D
         _spawnLocation.Offset = GD.Randi();
         
         var speed =  (float)GD.RandRange(150.0, 250.0) + _gameData.Score * 5;
-        var direction = _spawnLocation.Rotation + Mathf.Pi / 2;
         var matchParams = _newMatches[_gameData.MatchLevel];
         var matchIndex = (int)(GD.Randi() % matchParams.Item1);
 
@@ -88,11 +95,14 @@ public class MainGame : Node2D
         spawnPosition.x = Mathf.Clamp(spawnPosition.x, _spawnMargin, _screenSize.x - _spawnMargin);
         spawnPosition.y = Mathf.Clamp(spawnPosition.y, _spawnMargin, _screenSize.y - _spawnMargin);
 
+        var direction = ((_screenSize / 2) - spawnPosition).Normalized().Angle();
+        GD.Print(Mathf.Rad2Deg(direction));
         var newScale = 1f + (_gameData.Score * _scaleFactor);
 
         var matchEntity = _matchEntityPrefab.Instance<MatchEntity>();
         AddChild(matchEntity);
-        matchEntity.Init(matchIndex / matchParams.Item2, matchIndex % matchParams.Item2, speed, direction);
+        matchEntity.Init(matchIndex / matchParams.Item2, matchIndex % matchParams.Item2, speed, direction, 
+            _gameData.MatchLevel > 1);
         matchEntity.Position = spawnPosition;
         matchEntity.Scale = new Vector2(newScale, newScale);
         matchEntity.Connect("MatchCollided", this, "OnMatchEntityMatchCollided");

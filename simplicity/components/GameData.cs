@@ -8,12 +8,16 @@ public class GameData : Node2D
     public int MatchLevel { get { return _matchLevel; } }
     public int Lives { get { return _lives; } }
     public int[] HighScores { get { return _highScores.ToArray(); } }
+    public int CurrentChain { get { return _currentChain; } }
+    public int HighestChain { get { return _highestChain; } }
 
     [Export] private int _score;
     [Export] private List<int> _highScores;
     [Export] private int _matchLevel;
     private int[] _levelThresholds = new int[] { 10, 25, 50, 100, };
     [Export] private int _lives;
+    [Export] private int _currentChain;
+    [Export] private int _highestChain;
 
     private AudioManager _audioManager;
 
@@ -28,12 +32,15 @@ public class GameData : Node2D
         _score = 0;
         _matchLevel = 0;
         _lives = 3;
+        _currentChain = 0;
+        _highestChain = 0;
     }
 
     public bool UpdateScore(int points)
     {
         if (points == 0)
         {
+            _currentChain = 0;
             _audioManager.PlayNoMatchSfx();
             _lives--;
 
@@ -47,6 +54,8 @@ public class GameData : Node2D
         {
             if (points == 1) { _audioManager.PlayGoodMatchSfx(); }
             else { _audioManager.PlayPerfectMatchSfx(); }
+            _currentChain++;
+            _highestChain = Mathf.Max(_currentChain, _highestChain);
             
             _score += points;
             CalculateMatchLevel();
